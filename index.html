@@ -11,7 +11,7 @@
 <body>
     
     <div id="login-area">
-        <h1 class="text-center">Welcome to my bank</h1>
+        <h1 class="text-center">Welcome to Pioneer bank</h1>
         <div class="submit-area">
         <input class="form-control margin-botom" type="email" placeholder="Email">
         <br>
@@ -65,8 +65,7 @@
         // deposit button handler
         const depositBtn = document.getElementById('deposit-btn');
         depositBtn.addEventListener('click', function(){
-            const depositAmount = document.getElementById('deposit-amount').value;
-            const depositNumber = parseFloat(depositAmount);
+            const depositNumber = getInput("deposit-amount");
 
             updateSpanText('current-deposit', depositNumber);
             document.getElementById('deposit-amount').value = "";
@@ -78,21 +77,28 @@
         // withdraw button handler
         const withdrawBtn = document.getElementById("withdraw-btn");
         withdrawBtn.addEventListener('click', function(){
-            const withdrawAmount = document.getElementById("withdraw-amount").value;
-            const withdrawAmountNumber = parseFloat(withdrawAmount);
-            updateSpanText('current-withdraw', withdrawAmountNumber);
-            document.getElementById('withdraw-amount').value = "";
-            if(parseFloat(document.getElementById("current-balance").innerText)< withdrawAmountNumber){
-                alert("Insufficient Balance");
+            const withdrawAmountNumber = getInput("withdraw-amount");
+            
+            if(parseFloat(document.getElementById("current-balance").innerText) >= withdrawAmountNumber){
+                
+                updateSpanText('current-balance', -1* withdrawAmountNumber);
+                updateSpanText('current-withdraw', withdrawAmountNumber);
             }
             else{
-                updateSpanText('current-balance', -1* withdrawAmountNumber);
+                alert("Insufficient Balance");
             }
             
+            document.getElementById('withdraw-amount').value = "";
         })
 
 
+        // functions to reduce repeat
 
+        function getInput(id){
+            const withdrawAmount = document.getElementById(id).value;
+            const withdrawAmountNumber = parseFloat(withdrawAmount);
+            return withdrawAmountNumber;
+        }
 
         function updateSpanText(id, depositNumber){
             const currentDeposit = document.getElementById(id).innerText;
